@@ -1,6 +1,6 @@
 {
   "name": "cocorita",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Cocorita Translations Library",
   "main": "lib/cocorita.js",
   "repository": {
@@ -15,7 +15,10 @@
     "build": "rimraf lib && babel src -d lib",
     "postbuild": "npm run test && npm run docs"
   },
-  "keywords": ["translation","localization"],
+  "keywords": [
+    "translation",
+    "localization"
+  ],
   "author": {
     "name": "Valerio Bianchi",
     "email": "contacts@valeriobianchi.com",
@@ -24,7 +27,6 @@
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.13.1",
     "eslint-config-airbnb-base": "^12.1.0",
