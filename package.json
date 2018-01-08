@@ -16,7 +16,11 @@
     "postbuild": "npm run test && npm run docs"
   },
   "keywords": ["translation","localization"],
-  "author": "Valerio Bianchi",
+  "author": {
+    "name": "Valerio Bianchi",
+    "email": "contacts@valeriobianchi.com",
+    "url": "https://valeriobianchi.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.26.0",
