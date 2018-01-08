@@ -8,7 +8,7 @@ There are many great localization tools out there, if you need a fully customiza
 But if you just need translation then Cocorita can fit your needs, it's small and functional. Give it a try!
 
 ## Usage
-API documentation is [here](https://docs/index.html).
+API documentation is [here](https://zakplus.github.io/cocorita/).
 
 ### Quick start (NodeJS)
 
