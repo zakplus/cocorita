@@ -95,7 +95,7 @@ Cocorita constructor will accept a options object with these keys:
 
 ``` javascript
 {
-  language    // {String}    The target language identifier
+  language,   // {String}    The target language identifier
   initialize  // {String[]}  Array of languages whose translations will be initialized with the source text if not present.
 }
 ```
@@ -146,9 +146,9 @@ JS Object:
 ```javascript
 {
   hello: {
-    de: "hallo"
-    en: "hello"
-    es: "hola"
+    de: "hallo",
+    en: "hello",
+    es: "hola",
     it: "ciao"
   },
 
@@ -176,9 +176,9 @@ JSON:
 ```json
 {
   "hello": {
-    "de": "hallo"
-    "en": "hello"
-    "es": "hola"
+    "de": "hallo",
+    "en": "hello",
+    "es": "hola",
     "it": "ciao"
   },
 
