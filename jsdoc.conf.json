@@ -1,0 +1,28 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": [],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": true
+        },
+
+        "systemName": "local-ize localization module",
+        "footer": "",
+        "copyright": "Copyright 2017 by Valerio Bianchi",
+        "includeDate": true,
+        "dateFormat": "MMMM Do YYYY",
+        "theme": "flatly",
+        "navType": "vertical",
+        "linenums": true,
+        "collapseSymbols" : false,
+        "inverseNav": true
+    }
+}

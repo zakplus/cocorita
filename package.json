@@ -1,0 +1,39 @@
+{
+  "name": "cocorita",
+  "version": "1.0.0",
+  "description": "Cocorita Translations Library",
+  "main": "lib/cocorita.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zakplus/cocorita.git"
+  },
+  "scripts": {
+    "pretest": "eslint --fix test/**/*.js",
+    "test": "tape test/**/*.js | tap-spec",
+    "docs": "rimraf docs && yuidoc src",
+    "prebuild": "eslint --fix src/**/*.js",
+    "build": "rimraf lib && babel src -d lib",
+    "postbuild": "npm run test && npm run docs"
+  },
+  "keywords": ["translation","localization"],
+  "author": "Valerio Bianchi",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.13.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "rimraf": "^2.6.2",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0",
+    "yuidoc-bootstrap-theme": "^1.0.6",
+    "yuidocjs": "^0.10.2"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "js-yaml": "^3.10.0",
+    "lodash": "^4.17.4"
+  }
+}

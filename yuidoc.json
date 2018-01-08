@@ -1,0 +1,12 @@
+{
+  "name": "Cocotita API",
+  "description": "Cocorita Translator",
+  "version": "1.0.0",
+  "logo": "",
+  "options": {
+    "outdir": "docs",
+    "linkNatives": true,
+    "themedir" : "node_modules/yuidoc-bootstrap-theme",
+    "helpers" : ["node_modules/yuidoc-bootstrap-theme/helpers/helpers.js"]
+  }
+}
