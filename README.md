@@ -5,7 +5,7 @@
 
 ## Motivation
 There are many great localization tools out there, if you need a fully customizable popular/standard solution then you should go for them.  
-But if you just need translation then Cocorita can fit your needs, it's small and functional. Give it a try!
+If you just need translation then Cocorita can fit your needs, it's small and functional. Give it a try!
 
 ## Usage
 API documentation is [here](https://zakplus.github.io/cocorita/).
@@ -100,8 +100,27 @@ Cocorita constructor will accept a options object with these keys:
 }
 ```
 
-## Initialization
-**DO NOT USE THIS FEATURE IN PRODUCTION.**  
+## Replace in translated string
+Sometimes you need to translate a text which contains some dynamic sections you want to set at run time.  
+In these cases, you can format your texts as a template (Cocorita support Mustache style tags) and use the tr() function "translate" property option:
+
+```javascript
+tr('You have {{ msglen }} new messages and {{ reqlen }} new requests!', {
+  replace: {
+    msglen: messages.length,
+    reqlen: requests.length
+  }
+});
+```
+
+translations database (YAML):
+```yaml
+You have {{ msglen }} new messages and {{ reqlen }} new requests!:
+  it: Hai {{ msglen }} nuovi messaggi e {{ reqlen }} nuove richieste!
+```
+
+## Database initialization
+**THIS FEATURE IS NOT INTENDED TO BE USED IN PRODUCTION ENVIRONMENT**  
 Cocorita could initialize missing target translations for you.
 To do so, you need to pass the 'initialize' languages array in the constructor options parameter:
 

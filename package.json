@@ -1,6 +1,6 @@
 {
   "name": "cocorita",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Cocorita Translations Library",
   "main": "lib/cocorita.js",
   "repository": {
