@@ -102,14 +102,12 @@ Cocorita constructor will accept a options object with these keys:
 
 ## Replace in translated string
 Sometimes you need to translate a text which contains some dynamic sections you want to set at run time.  
-In these cases, you can format your texts as a template (Cocorita support Mustache style tags) and use the tr() function "translate" property option:
+In these cases, you can format your texts as a template (Cocorita support Mustache style tags) and use the replace object parameter:
 
 ```javascript
 tr('You have {{ msglen }} new messages and {{ reqlen }} new requests!', {
-  replace: {
-    msglen: messages.length,
-    reqlen: requests.length
-  }
+  msglen: messages.length,
+  reqlen: requests.length
 });
 ```
 
