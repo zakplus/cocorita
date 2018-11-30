@@ -23,20 +23,20 @@ function isValidTranslationsObject(data) {
 
 class Cocorita extends EventEmitter {
   /**
- * options object keys:<br/>
- * <br/>
- * <b>language {String}:</b>
- * The target language identifier<br/>
- * <br/>
- * <b>initialize {String Array}:</b>
- * Array of languages whose translations will be initialized with the source text if not present.
- *
- * @class Cocorita
- * @constructor
- * @param {Object} options Options object
- * @return {Cocorita} A new Cocorita instance
- * @throws {Error} Throws a Error if something gone wrong
- */
+   * options object keys:<br/>
+   * <br/>
+   * <b>language {String}:</b>
+   * The target language identifier<br/>
+   * <br/>
+   * <b>initialize {String Array}:</b>
+   * Array of languages whose translations will be initialized with the source text if not present.
+   *
+   * @class Cocorita
+   * @constructor
+   * @param {Object} options Options object
+   * @return {Cocorita} A new Cocorita instance
+   * @throws {Error} Throws a Error if something gone wrong
+   */
   constructor(options) {
     super();
 
@@ -250,4 +250,5 @@ class Cocorita extends EventEmitter {
  */
 Cocorita.EVT_INIT_KEY = EVT_INIT_KEY;
 
-module.exports = Cocorita;
+export default Cocorita;
+export { Cocorita };
