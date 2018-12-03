@@ -26,7 +26,7 @@ const Cocorita = require('cocorita').Cocorita;
 
 If you are using cocorita in a browser you have to load the script from the "dist" folder.  
 The script expose the library with the global property "CocoLib". Here is an example:
-```Javascript
+```html
 <script type="text/javascript" src="<path to>/dist/cocorita.js"></script>
 
 <script type="text/javascript">
