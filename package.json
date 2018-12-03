@@ -10,9 +10,12 @@
   "scripts": {
     "pretest": "eslint --fix test/**/*.js",
     "test": "tape test/**/*.js | tap-spec",
-    "docs": "rimraf docs && yuidoc src",
-    "prebuild": "eslint --fix src/**/*.js",
-    "build": "rimraf lib && babel src -d lib",
+    "docs": "rimraf docs && esdoc",
+    "linter": "eslint --fix src/**/*.js",
+    "prebuild": "npm run linter",
+    "build": "npm run build-node && npm run build-browser",
+    "build-browser": "rimraf dist && webpack --env prod",
+    "build-node": "rimraf lib && babel ./src/cocorita.js -d lib",
     "postbuild": "npm run test && npm run docs"
   },
   "keywords": [
@@ -26,19 +29,27 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "eslint": "^4.13.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "rimraf": "^2.6.2",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.8.0",
-    "yuidoc-bootstrap-theme": "^1.0.6",
-    "yuidocjs": "^0.10.2"
+    "@babel/cli": "7.1.5",
+    "@babel/core": "7.1.6",
+    "@babel/preset-env": "7.1.6",
+    "babel-loader": "8.0.4",
+    "esdoc": "1.1.0",
+    "esdoc-standard-plugin": "1.0.0",
+    "eslint": "4.13.1",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-loader": "2.1.1",
+    "eslint-plugin-import": "2.8.0",
+    "rimraf": "2.6.2",
+    "tap-spec": "4.1.1",
+    "tape": "4.8.0",
+    "webpack": "4.26.1",
+    "webpack-cli": "3.1.2"
   },
   "dependencies": {
-    "js-yaml": "^3.10.0",
-    "lodash": "^4.17.4"
+    "js-yaml": "3.10.0",
+    "lodash": "4.17.4",
+    "lodash.clonedeep": "4.5.0",
+    "lodash.every": "4.6.0",
+    "lodash.some": "4.6.0"
   }
 }

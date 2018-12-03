@@ -1,0 +1,20 @@
+{
+  "source": "./src",
+  "destination": "./docs",
+  "includes": ["\\.js$"],
+  "plugins": [
+    {
+      "name": "esdoc-standard-plugin",
+      "option": {
+        "lint": {"enable": true},
+        "coverage": {"enable": false},
+        "brand": {
+          "title": "Cocorita",
+          "description": "language translation library",
+          "repository": "https://github.com/zakplus/cocorita",
+          "author": "https://valeriobianchi.com"
+        }
+      }
+    }
+  ]
+}

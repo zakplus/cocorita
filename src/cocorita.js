@@ -1,48 +1,80 @@
-/**
- * @module cocorita
- */
-
 import EventEmitter from 'events';
 import yaml from 'js-yaml';
-import _ from 'lodash';
+import some from 'lodash.some';
+import every from 'lodash.every';
+import cloneDeep from 'lodash.clonedeep';
 
 // Events constants
+
+/**
+ * Event emitted every time a translation is not found for any
+ * of the languages passed in the initialize array.
+ *
+ * @typedef {string} EVT_INIT_KEY
+ * @example
+ * coco.on(Cocorita.EVT_INIT_KEY, ({cocorita, data, source, targets}) => {
+ *   // cocorita {Cocorita} : Cocorita instance emitting the event
+ *   // data {Object}       : The translations data object
+ *   // source {String}     : The source text
+ *   // targets {Object}    : The target languages translations object
+ * });
+ */
 const EVT_INIT_KEY = 'init-key';
 
-// Regular expression validating tr replace keys
+/**
+ * Regular expression validating tr replace keys
+ * @type {RegExp}
+ */
 const REPLACE_KEY_REGEXP = /^[a-zA-Z0-9_]+$/;
 
-// Check if data is a valid translations object
+/**
+ * Check if data is a valid translations object
+ * @param {Object} data A translations object
+ * @return {Boolean} Return true if data is a valid translations object
+ */
 function isValidTranslationsObject(data) {
   if (typeof data !== 'object') return false;
-  return _.every(data, (source) => {
+  return every(data, (source) => {
     if (typeof source !== 'object') return false;
-    return _.every(source, translation => typeof translation === 'string');
+    return every(source, translation => typeof translation === 'string');
   });
 }
 
+// Polyfill for Array.isArray
+if (!Array.isArray) {
+  Array.isArray = function isArray(arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
+
+/**
+ * Cocorita class
+ */
 class Cocorita extends EventEmitter {
   /**
-   * options object keys:<br/>
-   * <br/>
-   * <b>language {String}:</b>
-   * The target language identifier<br/>
-   * <br/>
-   * <b>initialize {String Array}:</b>
-   * Array of languages whose translations will be initialized with the source text if not present.
+   * Constructor
    *
-   * @class Cocorita
-   * @constructor
    * @param {Object} options Options object
+   * @param {String} [options.language] The target language identifier
+   * @param {String[]} [options.initialize] Array of languages whose translations
+   * will be initialized with the source text if not present
    * @return {Cocorita} A new Cocorita instance
    * @throws {Error} Throws a Error if something gone wrong
    */
   constructor(options) {
     super();
 
+    /**
+     * Target language
+     * @type {String}
+     */
     this.lang = '';
+
+    /**
+     * Translations object
+     * @type {Object}
+     */
     this.data = {};
-    this.defaultIfMissing = 'source';
 
     // Options check
     if (options !== undefined) {
@@ -53,15 +85,25 @@ class Cocorita extends EventEmitter {
 
       // Initialize target languages
       if (options.initialize !== undefined) {
-        if (!(_.isArray(options.initialize) && _.every(options.initialize, value => typeof value === 'string'))) {
+        if (!(Array.isArray(options.initialize) && every(options.initialize, value => typeof value === 'string'))) {
           throw new Error('options.initialize must be a string array');
         }
+
+        /**
+         * Array of target languages to be initialized if a translation is missing
+         * @type {String[]}
+         */
         this.initialize = options.initialize;
       }
 
       // Default target text for tr if missing translation
       if (options.defaultTarget) {
-        if (_.some(['source', 'blank'], def => def === options.defaultTarget)) {
+        if (some(['source', 'blank'], def => def === options.defaultTarget)) {
+          /**
+           * Normally, when a target language translation is found missing,
+           * an empty string is emitted.
+           * If defaultTarget value is set to 'source', the source text is emitted instead.
+           */
           this.defaultTarget = options.defaultTarget;
         } else {
           throw new Error('Invalid defaultTarget option');
@@ -70,11 +112,19 @@ class Cocorita extends EventEmitter {
     }
   }
 
+  /**
+   * Set target language id
+   * @type {String}
+   */
   set language(lang) {
     if (lang === undefined || typeof lang !== 'string') throw new Error('language must be a string');
     this.lang = lang;
   }
 
+  /**
+   * get target language id
+   * @type {String}
+   */
   get language() {
     return this.lang;
   }
@@ -83,7 +133,6 @@ class Cocorita extends EventEmitter {
    * Load translations data from a database file
    * or a translations object
    *
-   * @method load
    * @param {String|Object} source A json or yaml string or a valid translations object
    * @param {String} [format] 'json' or 'yaml'. Required only if source is a file path.
    * @throws {Error}
@@ -92,7 +141,7 @@ class Cocorita extends EventEmitter {
     if (source === undefined) throw new Error('source parameter is required');
 
     if (typeof source === 'object') {
-      const data = _.cloneDeep(source);
+      const data = cloneDeep(source);
       if (isValidTranslationsObject(data)) {
         this.data = data;
         return;
@@ -134,29 +183,29 @@ class Cocorita extends EventEmitter {
 
   /**
    * Get a copy of translations data object
+   * @return {Object} Translations data object
    */
   getData() {
-    return _.cloneDeep(this.data);
+    return cloneDeep(this.data);
   }
 
   /**
    * Get translations data serialized to json or yaml format
    *
-   * @method dump
    * @param {String} format 'json' or 'yaml'
    * @throws {Error}
+   * @return {String} Serialized translations data
    */
   dump(format) {
     if (format === undefined) throw new Error('format parameter is required');
     if (typeof format !== 'string') throw new Error('format parameter must be a string');
 
     if (format === 'json') {
-      const data = _(this.data)
-        .toPairs()
-        .sortBy(0)
-        .fromPairs()
-        .value();
-      return JSON.stringify(data, null, 2);
+      const sortedData = {};
+      Object.keys(this.data).sort().forEach((key) => {
+        sortedData[key] = this.data[key];
+      });
+      return JSON.stringify(sortedData, null, 2);
     }
 
     if (format === 'yaml') {
@@ -173,11 +222,10 @@ class Cocorita extends EventEmitter {
    * target languages translations for the source text and will initialize them with a blank string
    * were are not available.
    *
-   * @method tr
    * @param {String} source The source text
    * @param {Object} replaces Replaces map object
    * @return {String} Translated text in current target language
-   * @throws EVT_INIT_KEY
+   * @emits {EVT_INIT_KEY} Emitted if target translation does not exists in data base
    * @throws {Error}
    */
   tr(source, replaces) {
@@ -188,9 +236,10 @@ class Cocorita extends EventEmitter {
     const replacesRe = [];
     if (replaces !== undefined) {
       if (typeof replaces !== 'object') throw new Error('replaces parameter must be a map');
-      _.forEach(replaces, (value, key) => {
-        const strval = value.toString();
-        if (!_.isString(key) || !key.match(REPLACE_KEY_REGEXP)) throw new Error(`replace parameter key not matching regular expression ${REPLACE_KEY_REGEXP}`);
+      Object.keys(replaces).forEach((key) => {
+        const value = replaces[key];
+        const strval = `${value}`;
+        if (typeof key !== 'string' || !key.match(REPLACE_KEY_REGEXP)) throw new Error(`replace parameter key not matching regular expression ${REPLACE_KEY_REGEXP}`);
         replacesRe.push({
           re: new RegExp(`\\{\\{ *${key} *\\}\\}`, 'g'),
           val: strval,
@@ -207,7 +256,7 @@ class Cocorita extends EventEmitter {
     // if a translation is not available for them
     if (this.initialize !== undefined) {
       let initKey = false;
-      _.forEach(this.initialize, (targetLang) => {
+      this.initialize.forEach((targetLang) => {
         if (this.data[source][targetLang] === undefined) {
           this.data[source][targetLang] = source;
           initKey = true;
@@ -224,7 +273,7 @@ class Cocorita extends EventEmitter {
 
       // Apply replaces
       if (replacesRe.length > 0) {
-        _.forEach(replacesRe, (replace) => {
+        replacesRe.forEach((replace) => {
           target = target.replace(replace.re, replace.val);
         });
       }
@@ -238,16 +287,6 @@ class Cocorita extends EventEmitter {
   }
 }
 
-/**
- * Event emitted every time a translation is not found for any
- * of the languages passed in the initialize array
- *
- * @event EVT_INIT_KEY
- * @param {Cocorita} cocorita Cocorita instance emitting the event
- * @param {Object} data The translations data object
- * @param {String} source The source text
- * @param {Object} targets The target languages translations object
- */
 Cocorita.EVT_INIT_KEY = EVT_INIT_KEY;
 
 export default Cocorita;
