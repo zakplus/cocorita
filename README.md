@@ -7,13 +7,44 @@
 There are many great localization tools out there, if you need a fully customizable popular/standard solution then you should go for them.  
 If you just need translation then Cocorita can fit your needs, it's small and functional. Give it a try!
 
+## Migration from 1.x.x version
+Starting from version 2.0.0 Cocorita adopted a fully ES6 module structure.  
+This implies you have to change your code **only if you are using cocorita in a CommonJS module** (with require) or in a browser.  
+No actions required if you are using cocorita in a ES6 module.
+
+If you are using cocorita in a CommonJS module:
+```Javascript
+// Change this
+const Cocorita = require('cocorita');
+
+// To this (using object destructuring)
+const { Cocorita } = require('cocorita');
+
+// Or this
+const Cocorita = require('cocorita').Cocorita;
+```
+
+If you are using cocorita in a browser you have to load the script from the "dist" folder.  
+The script expose the library with the global property "CocoLib". Here is an example:
+```Javascript
+<script type="text/javascript" src="<path to>/dist/cocorita.js"></script>
+
+<script type="text/javascript">
+  // Change this
+  const coco = new Cocorita(options);
+
+  // To this (using object destructuring)
+  const coco = new CocoLib.Cocorita(options);
+</script>
+```
+
 ## Usage
 API documentation is [here](https://zakplus.github.io/cocorita/).
 
 ### Quick start (NodeJS)
 
 ```javascript
-const Cocorita = require('cocorita');
+const { Cocorita } = require('cocorita');
 
 // Initialize and set target language to 'es'
 const coco = new Cocorita({ language: 'es' });
@@ -47,7 +78,7 @@ var translations = {
 
 html:
 ```html
-<script type="text/javascript" src="cocorita.js"></script>
+<script type="text/javascript" src="<path to>/dist/cocorita.js"></script>
 
 <!-- include database -->
 <script type="text/javascript" src="database.js"></script>
@@ -55,7 +86,7 @@ html:
 <script type="text/javascript">
   (function() {
     // Initialize
-    var coco = new Cocorita({ language: 'es' });
+    var coco = new CocoLib.Cocorita({ language: 'es' });
 
     // Load translations database
     coco.load(translations);
@@ -73,7 +104,7 @@ You could get the database in any other way. It could be a object, json or yaml:
 <script type="text/javascript">
   (function() {
     // Initialize
-    var coco = new Cocorita({ language: 'es' });
+    var coco = new CocoLib.Cocorita({ language: 'es' });
 
     // Load translations database
     asyncLoadTranslations(function(err, data) {

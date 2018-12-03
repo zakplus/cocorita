@@ -1,6 +1,6 @@
 const test = require('tape');
 const yaml = require('js-yaml');
-const Cocorita = require('../lib/cocorita');
+const { Cocorita } = require('../lib/cocorita');
 
 const objData = {
   hello: {

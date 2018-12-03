@@ -1,116 +1,248 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>Cocorita API</title>
-    <link rel="stylesheet" href="">
-    <link rel="stylesheet" href="./assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="./assets/css/main.css" id="site_styles">
-    <link rel="stylesheet" href="./assets/css/custom.css">
-    <link rel="stylesheet" href="./assets/vendor/bootstrap/css/bootstrap.css">
-    <link rel="shortcut icon" type="image/png" href="./assets/favicon.png">
-</head>
-<body class="yui3-skin-sam">
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <h1 class="brand" style="padding: 10px 16px 10px; height: 20px; line-height: 20px; margin-left: 0;">
-	    <img alt="Cocorita API" src="./assets/css/logo.png" style="max-height: 65%;" title="Cocorita API">
-            Cocorita API
-        </h1>
-	<div class="nav">
-            <li class="divider-vertical"></li>
-            <li>
-                <p class="navbar-text">
-                    API Docs for Version: <b>1.0.3</b>
-                </p>
-            </li>
-        </div>
-        <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
-            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes/modules..." data-obj='["classes/Cocorita", "modules/cocorita"]'>
-        </form>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="span3">
-	    <div>
-	        <h3>APIs</h3>
-	        <div id="sidebar">
-	            <ul id="main-nav" class="nav nav-tabs" style="margin-bottom:0;">
-	                <li class="active"><a href="#classes" data-toggle="tab">Classes</a></li>
-	                <li><a href="#modules" data-toggle="tab">Modules</a></li>
-	            </ul>
-	    
-	            <div id="api-tabview-filter">
-	                <input type="search" placeholder="Type to filter APIs">
-	            </div>
-	    
-	            <div class="tab-content" style="border: 1px solid #DDD; border-top:0;">
-	                <div class="tab-pane active" id="classes">
-	                    <ul id="api-classes" class="nav nav-list">
-	                            <li><a href="./classes/Cocorita.html">Cocorita</a></li>
-	                    </ul>
-	                </div>
-	    
-	                <div class="tab-pane" id="modules">
-	                    <ul id="api-modules" class="nav nav-list">
-	                            <li><a href="./modules/cocorita.html">cocorita</a></li>
-	                    </ul>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-        </div>
-        <div class="span9">
-                <form id="options-form" class="form-inline pull-right">
-                    Show:
-                    <label for="api-show-inherited" class="checkbox">
-                        <input type="checkbox" id="api-show-inherited" checked>
-                        Inherited
-                    </label>
-            
-                    <label for="api-show-protected" class="checkbox">
-                        <input type="checkbox" id="api-show-protected">
-                        Protected
-                    </label>
-            
-                    <label for="api-show-private" class="checkbox">
-                        <input type="checkbox" id="api-show-private">
-                        Private
-                    </label>
-                    <label for="api-show-deprecated" class="checkbox">
-                        <input type="checkbox" id="api-show-deprecated">
-                        Deprecated
-                    </label>
-            
-                </form>
-            
-            <div class="apidocs">
-                <div id="docs-main">
-                    <div class="content">
-<p>Browse to a module or class using the sidebar to view its API documentation.</p>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">Home | Cocorita</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="language translation library"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="Cocorita"><meta property="twitter:description" content="language translation library"></head>
+<body class="layout-container" data-ice="rootContainer">
 
-<h2>Keyboard Shortcuts</h2>
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/zakplus/cocorita"><img width="20px" src="./image/github.png"></a></header>
 
-<ul>
-    <li><p>Press <kbd>s</kbd> to focus the API search box.</p></li>
-
-    <li><p>Use <kbd>Up</kbd> and <kbd>Down</kbd> to select classes, modules, and search results.</p></li>
-
-    <li class="mac-only"><p>With the API search box or sidebar focused, use <kbd><span class="cmd">&#x2318;</span>-Left</kbd> or <kbd><span class="cmd">&#x2318;</span>-Right</kbd> to switch sidebar tabs.</p></li>
-
-    <li class="pc-only"><p>With the API search box or sidebar focused, use <kbd>Ctrl+Left</kbd> and <kbd>Ctrl+Right</kbd> to switch sidebar tabs.</p></li>
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cocorita.js~Cocorita.html">Cocorita</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-EVT_INIT_KEY">EVT_INIT_KEY</a></span></span></li>
 </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-<script src="./assets/vendor/jquery/jquery-1.8.2.min.js"></script>
-<script src="./assets/vendor/bootstrap/js/bootstrap.js"></script>
-<script src="./assets/vendor/prettify/prettify-min.js"></script>
-<script src="./assets/js/yuidoc-bootstrap.js"></script>
-<script>prettyPrint();</script>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="cocorita-language-translation-library">Cocorita language translation library</h1><h2 id="install">Install</h2><p><code>npm install --save cocorita</code></p>
+<h2 id="motivation">Motivation</h2><p>There are many great localization tools out there, if you need a fully customizable popular/standard solution then you should go for them.<br>If you just need translation then Cocorita can fit your needs, it&apos;s small and functional. Give it a try!</p>
+<h2 id="migration-from-1-x-x-version">Migration from 1.x.x version</h2><p>Starting from version 2.0.0 Cocorita adopted a fully ES6 module structure.<br>This implies you have to change your code <strong>only if you are using cocorita in a CommonJS module</strong> (with require) or in a browser.<br>No actions required if you are using cocorita in a ES6 module.</p>
+<p>If you are using cocorita in a CommonJS module:</p>
+<pre><code class="lang-Javascript"><code class="source-code prettyprint">// Change this
+const Cocorita = require(&apos;cocorita&apos;);
+
+// To this (using object destructuring)
+const { Cocorita } = require(&apos;cocorita&apos;);
+
+// Or this
+const Cocorita = require(&apos;cocorita&apos;).Cocorita;</code>
+</code></pre>
+<p>If you are using cocorita in a browser you have to load the script from the &quot;dist&quot; folder.<br>The script expose the library with the global property &quot;CocoLib&quot;. Here is an example:</p>
+<pre><code class="lang-Javascript"><code class="source-code prettyprint">&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;path to&gt;/dist/cocorita.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+  // Change this
+  const coco = new Cocorita(options);
+
+  // To this (using object destructuring)
+  const coco = new CocoLib.Cocorita(options);
+&lt;/script&gt;</code>
+</code></pre>
+<h2 id="usage">Usage</h2><p>API documentation is <a href="https://zakplus.github.io/cocorita/">here</a>.</p>
+<h3 id="quick-start--nodejs-">Quick start (NodeJS)</h3><pre><code class="lang-javascript"><code class="source-code prettyprint">const { Cocorita } = require(&apos;cocorita&apos;);
+
+// Initialize and set target language to &apos;es&apos;
+const coco = new Cocorita({ language: &apos;es&apos; });
+
+// Load a YAML translations database from file
+coco.load(fs.readFileSync(&apos;translations.yaml&apos;, { encoding: &apos;utf8&apos; }), &apos;yaml&apos;));
+
+// Use
+console.log( coco.tr(&apos;Hello Cocorita!&apos;) ); // Hola Cocorita!</code>
+</code></pre>
+<h3 id="quick-start--browser-">Quick start (Browser)</h3><p>Example with database as a object in a script file:</p>
+<p>database.js:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">var translations = {
+  hello: {
+    en: &apos;hello&apos;,
+    es: &apos;hola&apos;,
+    it: &apos;ciao&apos;
+  },
+  world: {
+    en: &apos;world&apos;,
+    es: &apos;mundo&apos;,
+    it: &apos;mondo&apos;
+  }
+}</code>
+</code></pre>
+<p>html:</p>
+<pre><code class="lang-html"><code class="source-code prettyprint">&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;path to&gt;/dist/cocorita.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- include database --&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;database.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+  (function() {
+    // Initialize
+    var coco = new CocoLib.Cocorita({ language: &apos;es&apos; });
+
+    // Load translations database
+    coco.load(translations);
+
+    // Use
+    coco.tr(&apos;Hello Cocorita!&apos;);
+  }) ();
+&lt;/script&gt;</code>
+</code></pre>
+<p>You could get the database in any other way. It could be a object, json or yaml:</p>
+<pre><code class="lang-html"><code class="source-code prettyprint">&lt;script type=&quot;text/javascript&quot; src=&quot;cocorita.js&quot;&gt;&lt;/script&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+  (function() {
+    // Initialize
+    var coco = new CocoLib.Cocorita({ language: &apos;es&apos; });
+
+    // Load translations database
+    asyncLoadTranslations(function(err, data) {
+      if(err) { // handle error }
+      else coco.load(data);
+      ready();
+    });
+
+    function ready() {
+      // Use
+      coco.tr(&apos;Hello Cocorita!&apos;);
+    }
+  }) ();
+&lt;/script&gt;</code>
+</code></pre>
+<h2 id="options">Options</h2><p>Cocorita constructor will accept a options object with these keys:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">{
+  language,   // {String}    The target language identifier
+  initialize  // {String[]}  Array of languages whose translations will be initialized with the source text if not present.
+}</code>
+</code></pre>
+<h2 id="replace-in-translated-string">Replace in translated string</h2><p>Sometimes you need to translate a text which contains some dynamic sections you want to set at run time.<br>In these cases, you can format your texts as a template (Cocorita support Mustache style tags) and use the replace object parameter:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">coco.tr(&apos;You have {{ msglen }} new messages and {{ reqlen }} new requests!&apos;, {
+  msglen: messages.length,
+  reqlen: requests.length
+});</code>
+</code></pre>
+<p>translations database (YAML):</p>
+<pre><code class="lang-yaml"><code class="source-code prettyprint">You have {{ msglen }} new messages and {{ reqlen }} new requests!:
+  it: Hai {{ msglen }} nuovi messaggi e {{ reqlen }} nuove richieste!</code>
+</code></pre>
+<h2 id="database-initialization">Database initialization</h2><p><strong>THIS FEATURE IS NOT INTENDED TO BE USED IN PRODUCTION ENVIRONMENT</strong><br>Cocorita could initialize missing target translations for you.
+To do so, you need to pass the &apos;initialize&apos; languages array in the constructor options parameter:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">const coco = new Cocorita({ initialize:[&apos;en&apos;, &apos;es&apos;, &apos;it&apos;, &apos;de&apos;] });</code>
+</code></pre>
+<p>then, any time the tr() function gets called, it will be checked if a translation is available for every of these languages. If a translation is missing, the source text will be added in place and a Cocorita.EVT_INIT_KEY event will be thrown.<br>You could listen for the event in order to update the database during development:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">const coco = new Cocorita({ initialize:[&apos;en&apos;, &apos;es&apos;, &apos;it&apos;, &apos;de&apos;] });
+
+coco.on(Cocorita.EVT_INIT_KEY, (co, data, source, targets) =&gt; {
+  // In this example we update the wole database
+  fs.writeFileSync(&apos;translations.yaml&apos;, co.dump(&apos;yaml&apos;));
+})</code>
+</code></pre>
+<h2 id="error-handling">Error handling</h2><p>Cocorita will throw errors if anyting unexpexted happen.<br>You should enclose error-throwing functions calls in try-catch blocks:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">let coco;
+try {
+  coco = new Cocorita();
+  coco.language = &apos;en&apos;;
+  coco.load(db);
+} catch(e) {
+  // Error handling
+}
+
+// tr() does not throw errors
+coco.tr();</code>
+</code></pre>
+<h2 id="data-formats">Data formats</h2><p>Cocorita load function will accept a JavaScript object or a YAML or JSON strings with these formats:</p>
+<p>JS Object:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">{
+  hello: {
+    de: &quot;hallo&quot;,
+    en: &quot;hello&quot;,
+    es: &quot;hola&quot;,
+    it: &quot;ciao&quot;
+  },
+
+  &quot;hello\nworld&quot;: {
+    es: &quot;hola\nmundo&quot;
+  }
+}</code>
+</code></pre>
+<p>YAML:</p>
+<pre><code class="lang-yaml"><code class="source-code prettyprint">hello:
+  de: hallo
+  en: hello
+  es: hola
+  it: ciao
+
+&quot;hello\nworld&quot;:
+  es: |-
+    hola
+    mundo</code>
+</code></pre>
+<p>JSON:</p>
+<pre><code class="lang-json"><code class="source-code prettyprint">{
+  &quot;hello&quot;: {
+    &quot;de&quot;: &quot;hallo&quot;,
+    &quot;en&quot;: &quot;hello&quot;,
+    &quot;es&quot;: &quot;hola&quot;,
+    &quot;it&quot;: &quot;ciao&quot;
+  },
+
+  &quot;hello\nworld&quot;: {
+    &quot;es&quot;: &quot;hola\nmundo&quot;
+  }
+}</code>
+</code></pre>
+<h2 id="license">license</h2><pre><code><code class="source-code prettyprint">MIT License
+
+Copyright (c) 2018 Valerio Bianchi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code>
+</code></pre></div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
 </body>
 </html>

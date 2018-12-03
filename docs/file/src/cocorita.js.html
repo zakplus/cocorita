@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/cocorita.js | Cocorita</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="language translation library"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="Cocorita"><meta property="twitter:description" content="language translation library"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/zakplus/cocorita"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/cocorita.js~Cocorita.html">Cocorita</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-EVT_INIT_KEY">EVT_INIT_KEY</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/cocorita.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import EventEmitter from &apos;events&apos;;
+import yaml from &apos;js-yaml&apos;;
+import some from &apos;lodash.some&apos;;
+import every from &apos;lodash.every&apos;;
+import cloneDeep from &apos;lodash.clonedeep&apos;;
+
+// Events constants
+
+/**
+ * Event emitted every time a translation is not found for any
+ * of the languages passed in the initialize array.
+ *
+ * @typedef {string} EVT_INIT_KEY
+ * @example
+ * coco.on(Cocorita.EVT_INIT_KEY, ({cocorita, data, source, targets}) =&gt; {
+ *   // cocorita {Cocorita} : Cocorita instance emitting the event
+ *   // data {Object}       : The translations data object
+ *   // source {String}     : The source text
+ *   // targets {Object}    : The target languages translations object
+ * });
+ */
+const EVT_INIT_KEY = &apos;init-key&apos;;
+
+/**
+ * Regular expression validating tr replace keys
+ * @type {RegExp}
+ */
+const REPLACE_KEY_REGEXP = /^[a-zA-Z0-9_]+$/;
+
+/**
+ * Check if data is a valid translations object
+ * @param {Object} data A translations object
+ * @return {Boolean} Return true if data is a valid translations object
+ */
+function isValidTranslationsObject(data) {
+  if (typeof data !== &apos;object&apos;) return false;
+  return every(data, (source) =&gt; {
+    if (typeof source !== &apos;object&apos;) return false;
+    return every(source, translation =&gt; typeof translation === &apos;string&apos;);
+  });
+}
+
+// Polyfill for Array.isArray
+if (!Array.isArray) {
+  Array.isArray = function isArray(arg) {
+    return Object.prototype.toString.call(arg) === &apos;[object Array]&apos;;
+  };
+}
+
+/**
+ * Cocorita class
+ */
+class Cocorita extends EventEmitter {
+  /**
+   * Constructor
+   *
+   * @param {Object} options Options object
+   * @param {String} [options.language] The target language identifier
+   * @param {String[]} [options.initialize] Array of languages whose translations
+   * will be initialized with the source text if not present
+   * @return {Cocorita} A new Cocorita instance
+   * @throws {Error} Throws a Error if something gone wrong
+   */
+  constructor(options) {
+    super();
+
+    /**
+     * Target language
+     * @type {String}
+     */
+    this.lang = &apos;&apos;;
+
+    /**
+     * Translations object
+     * @type {Object}
+     */
+    this.data = {};
+
+    // Options check
+    if (options !== undefined) {
+      if (options.language !== undefined) {
+        if (typeof options.language !== &apos;string&apos;) throw new Error(&apos;options.language must be a string&apos;);
+        this.language = options.language;
+      }
+
+      // Initialize target languages
+      if (options.initialize !== undefined) {
+        if (!(Array.isArray(options.initialize) &amp;&amp; every(options.initialize, value =&gt; typeof value === &apos;string&apos;))) {
+          throw new Error(&apos;options.initialize must be a string array&apos;);
+        }
+
+        /**
+         * Array of target languages to be initialized if a translation is missing
+         * @type {String[]}
+         */
+        this.initialize = options.initialize;
+      }
+
+      // Default target text for tr if missing translation
+      if (options.defaultTarget) {
+        if (some([&apos;source&apos;, &apos;blank&apos;], def =&gt; def === options.defaultTarget)) {
+          /**
+           * Normally, when a target language translation is found missing,
+           * an empty string is emitted.
+           * If defaultTarget value is set to &apos;source&apos;, the source text is emitted instead.
+           */
+          this.defaultTarget = options.defaultTarget;
+        } else {
+          throw new Error(&apos;Invalid defaultTarget option&apos;);
+        }
+      }
+    }
+  }
+
+  /**
+   * Set target language id
+   * @type {String}
+   */
+  set language(lang) {
+    if (lang === undefined || typeof lang !== &apos;string&apos;) throw new Error(&apos;language must be a string&apos;);
+    this.lang = lang;
+  }
+
+  /**
+   * get target language id
+   * @type {String}
+   */
+  get language() {
+    return this.lang;
+  }
+
+  /**
+   * Load translations data from a database file
+   * or a translations object
+   *
+   * @param {String|Object} source A json or yaml string or a valid translations object
+   * @param {String} [format] &apos;json&apos; or &apos;yaml&apos;. Required only if source is a file path.
+   * @throws {Error}
+   */
+  load(source, format) {
+    if (source === undefined) throw new Error(&apos;source parameter is required&apos;);
+
+    if (typeof source === &apos;object&apos;) {
+      const data = cloneDeep(source);
+      if (isValidTranslationsObject(data)) {
+        this.data = data;
+        return;
+      }
+      throw new Error(&apos;invalid translations object&apos;);
+    }
+
+    if (typeof source === &apos;string&apos;) {
+      if (format === undefined) throw new Error(&apos;format parameter is required if source is a string&apos;);
+      if (typeof format !== &apos;string&apos;) throw new Error(&apos;format parameter must be a string&apos;);
+
+      if (format === &apos;json&apos;) {
+        try {
+          const data = JSON.parse(source);
+          if (!isValidTranslationsObject(data)) throw new Error(&apos;invalid source&apos;);
+          this.data = data;
+          return;
+        } catch (e) {
+          throw new Error(&apos;invalid source&apos;);
+        }
+      }
+
+      if (format === &apos;yaml&apos;) {
+        try {
+          const data = yaml.safeLoad(source);
+          if (!isValidTranslationsObject(data)) throw new Error(&apos;invalid source&apos;);
+          this.data = data;
+          return;
+        } catch (e) {
+          throw new Error(&apos;invalid source&apos;);
+        }
+      }
+
+      throw new Error(&apos;unsupported format&apos;);
+    }
+
+    throw new Error(&apos;source parameter must be a valid translations object or a file path&apos;);
+  }
+
+  /**
+   * Get a copy of translations data object
+   * @return {Object} Translations data object
+   */
+  getData() {
+    return cloneDeep(this.data);
+  }
+
+  /**
+   * Get translations data serialized to json or yaml format
+   *
+   * @param {String} format &apos;json&apos; or &apos;yaml&apos;
+   * @throws {Error}
+   * @return {String} Serialized translations data
+   */
+  dump(format) {
+    if (format === undefined) throw new Error(&apos;format parameter is required&apos;);
+    if (typeof format !== &apos;string&apos;) throw new Error(&apos;format parameter must be a string&apos;);
+
+    if (format === &apos;json&apos;) {
+      const sortedData = {};
+      Object.keys(this.data).sort().forEach((key) =&gt; {
+        sortedData[key] = this.data[key];
+      });
+      return JSON.stringify(sortedData, null, 2);
+    }
+
+    if (format === &apos;yaml&apos;) {
+      return yaml.safeDump(this.data, { sortKeys: true });
+    }
+
+    throw new Error(&apos;unsupported format&apos;);
+  }
+
+  /**
+   * Translate a string of source text in the target language.&lt;br/&gt;
+   * If the translation is not available in the database the method return a blank string.&lt;br/&gt;
+   * If the initialize option was passed to the constructor, then this method will check all the
+   * target languages translations for the source text and will initialize them with a blank string
+   * were are not available.
+   *
+   * @param {String} source The source text
+   * @param {Object} replaces Replaces map object
+   * @return {String} Translated text in current target language
+   * @emits {EVT_INIT_KEY} Emitted if target translation does not exists in data base
+   * @throws {Error}
+   */
+  tr(source, replaces) {
+    if (source === undefined) return &apos;&apos;;
+    if (typeof source !== &apos;string&apos;) throw new Error(&apos;source parameter must be a string&apos;);
+
+    // Check options object
+    const replacesRe = [];
+    if (replaces !== undefined) {
+      if (typeof replaces !== &apos;object&apos;) throw new Error(&apos;replaces parameter must be a map&apos;);
+      Object.keys(replaces).forEach((key) =&gt; {
+        const value = replaces[key];
+        const strval = `${value}`;
+        if (typeof key !== &apos;string&apos; || !key.match(REPLACE_KEY_REGEXP)) throw new Error(`replace parameter key not matching regular expression ${REPLACE_KEY_REGEXP}`);
+        replacesRe.push({
+          re: new RegExp(`\\{\\{ *${key} *\\}\\}`, &apos;g&apos;),
+          val: strval,
+        });
+      });
+    }
+
+    // If targets object does not exists then initialize it
+    if (this.data[source] === undefined) {
+      this.data[source] = {};
+    }
+
+    // If initialization is required then initialize target languages
+    // if a translation is not available for them
+    if (this.initialize !== undefined) {
+      let initKey = false;
+      this.initialize.forEach((targetLang) =&gt; {
+        if (this.data[source][targetLang] === undefined) {
+          this.data[source][targetLang] = source;
+          initKey = true;
+        }
+      });
+      if (initKey) {
+        this.emit(EVT_INIT_KEY, this, this.data, source, this.data[source]);
+      }
+    }
+
+    // If a translation is available for target language then return it
+    if (this.data[source][this.lang] !== undefined) {
+      let target = this.data[source][this.lang];
+
+      // Apply replaces
+      if (replacesRe.length &gt; 0) {
+        replacesRe.forEach((replace) =&gt; {
+          target = target.replace(replace.re, replace.val);
+        });
+      }
+
+      return target;
+    }
+
+    // If no translation available then return a default value
+    if (this.defaultTarget === &apos;source&apos;) return source;
+    return &apos;&apos;;
+  }
+}
+
+Cocorita.EVT_INIT_KEY = EVT_INIT_KEY;
+
+export default Cocorita;
+export { Cocorita };
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
