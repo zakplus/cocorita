@@ -1,6 +1,6 @@
 test
 src
 docs
-yuidoc.json
+.esdoc.json
 .babelrc
 .eslintrc.js
